@@ -151,4 +151,4 @@ Up until now I’ve been using the fantastic [Klack](https://tryklack.com/) app 
 
 Thank you Klack and thank you Type Joy for the inspiration. And thank you so much guys for trying this out!
 
-*If you find Taptix fun or useful, I would greatly appreciate your support by buying me a coffee at ~[THIS LINK](https://www.buymeacoffee.com/afadingthought)~. Your generosity would mean the world to me!*
+*If you find Taptix fun or useful, I would greatly appreciate your support by buying me a coffee at [THIS LINK](https://www.buymeacoffee.com/afadingthought). Your generosity would mean the world to me!*
