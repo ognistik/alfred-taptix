@@ -37,8 +37,8 @@ Taptix is a lightweight Go app that adds mechanical keyboard and mouse sounds to
 
 ### Alfred’s Search Bar
 Activate Taptix and modify its settings while running with the “tt” or “taptix” keywords. The menu options are self explanatory, but there’s two things you must know.
-1. Fuzzy search is supported (e.g., "tt sk" for "Set Keyboard Sound")
-2. Hold CMD or OPT when selecting "Set Volume" to adjust keyboard or mouse volume separately
+1. Fuzzy search is supported (e.g., "tt sk" for "Set Keyboard Sound").
+2. Hold CMD or OPT when selecting "Set Volume" to adjust keyboard or mouse volume separately.
 
 ### Hotkeys & External Triggers
 Triggers have been color coded for easy setup:
@@ -118,12 +118,12 @@ Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” com
   <img width="300" src="Workflow/assets/images/image02.jpg">
 </p>
 
-To trust the app:
-1. Go to Alfred's Workflows tab
-2. Find Taptix in the sidebar
-3. Right-click and reveal the workflow in Finder
-4. Right-click the "taptix" file and select open
-5. Click "Open" in the warning dialog
+**To trust the app:**
+1. Go to Alfred's Workflows tab.
+2. Find Taptix in the sidebar.
+3. Right-click and reveal the workflow in Finder.
+4. Right-click the "taptix" file and select open.
+5. Click "Open" in the warning dialog.
 
 <p align="center">
   <img width="300" src="Workflow/assets/images/image03.jpg">
@@ -138,9 +138,11 @@ If you opt to compile the app yourself you'll need to clone this repo and have G
 ---
 ## FAQ
 **Why is there lag?**
+
 Taptix is built in Go, which is actually pretty fast! If you are experiencing an uncomfortable amount of lag, it may be due to using bluetooth with your speakers/headphones. Otherwise, it could also be that the sounds you are using are not well trimmed. If you think this has to do with the Go app itself, feel free to [check it out](https://github.com/ognistik/alfred-taptix/tree/main/Source) and create a pull request if you think it could be optimized.
 
 **I’d like to have a specific audio file play per key instead of randomizing.**
+
 I believe this is possible to customize by modifying the [source code](https://github.com/ognistik/alfred-taptix/tree/main/Source), but the priority for me is that Taptix remains easy and flexible to use. The randomizing feature makes it very simple to create sound packs. If you think of a way to integrate both the randomizing and an optional non-randomizing setting, without making the workflow overly complicated, let me know and we can discuss it. :) 
 
 ---
