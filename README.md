@@ -115,7 +115,7 @@ Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” com
 **Taptix is a small app. Unfortunately, I'm not a developer nor have a way to notarize it.** When you first run the workflow, you'll see a warning. You can either trust the app or compile it from the source code.
 
 <p align="center">
-  <img width="400" src="Workflow/assets/images/image02.jpg">
+  <img width="300" src="Workflow/assets/images/image02.jpg">
 </p>
 
 To trust the app:
@@ -126,7 +126,7 @@ To trust the app:
 5. Click "Open" in the warning dialog
 
 <p align="center">
-  <img width="400" src="Workflow/assets/images/image03.jpg">
+  <img width="300" src="Workflow/assets/images/image03.jpg">
 </p>
 
 **When you click "Open" a Terminal window will unsuccessfully attempt to initialize Taptix. Don't worry, this only means you've successfully authorized the app.** You can close Terminal and use the Workflow without issues.
