@@ -1,7 +1,7 @@
 <h1 align="center">TAPTIX</h1>
 <p align="center"><strong>Mechanical Keyboard and Mouse Sounds for Alfred</strong></p>
 <p align="center">
-    <img width="600" src="Workflow/assets/images/taptix.png">
+    <img width="300" src="Workflow/assets/images/taptix.png">
   </a>
 </p>
 
