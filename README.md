@@ -137,10 +137,10 @@ If you opt to compile the app yourself you'll need to clone this repo and have G
 
 ---
 ## FAQ
-
 **Why is there lag?**
 
-Taptix is built in Go, which is actually pretty fast! If you are experiencing an uncomfortable amount of lag, it may be due to using bluetooth with your speakers/headphones. Otherwise, it could also be that the sounds you are using are not well trimmed. If you think this has to do with the Go app itself, feel free to [check it out](https://github.com/ognistik/alfred-taptix/tree/main/Source) and create a pull request if you think it could be optimized.
+Taptix is built in Go,
+ which is actually pretty fast! If you are experiencing an uncomfortable amount of lag, it may be due to using bluetooth with your speakers/headphones. Otherwise, it could also be that the sounds you are using are not well trimmed. If you think this has to do with the Go app itself, feel free to [check it out](https://github.com/ognistik/alfred-taptix/tree/main/Source) and create a pull request if you think it could be optimized.
 
 **I’d like to have a specific audio file play per key instead of randomizing.**
 
