@@ -1,10 +1,9 @@
 # Taptix Source Code
 *Originally forked from [Type-Joy](https://github.com/webdevcody/type-joy)*
 
+## Getting Go
 Taptix is an app built with Go.
-Install Go from [Homebrew](https://brew.sh/).
-
-`brew install go`
+Install Go with [Homebrew](https://brew.sh/): `brew install go`
 
 ## How to Run
 1. `go mod tidy`
