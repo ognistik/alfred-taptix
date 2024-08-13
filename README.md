@@ -5,11 +5,11 @@
   </a>
 </p>
 
-## What is Taptix?
+## WHAT IS TAPTIX?
 Taptix is a lightweight Go app that adds mechanical keyboard and mouse sounds to your system interactions. It integrates with [Alfred](https://www.alfredapp.com/), giving you flexible control and customization options.
 
 ---
-## Features
+## FEATURES
 * Realistic sound playback for key presses (up and down) and mouse clicks.
 * Custom sounds for spacebar and return key.
 * Randomized sounds for other keys to enhance realism and simplify custom sound packs.
@@ -22,12 +22,12 @@ Taptix is a lightweight Go app that adds mechanical keyboard and mouse sounds to
 * Advanced: Create custom presets by modifying multiple settings at once using external triggers.
 
 ---
-## Installation
+## INSTALLATION
 1. Check the [latest release](https://github.com/ognistik/alfred-taptix/releases/latest) and install the `.alfredworkflow` file.
 2. [Authorize Taptix](#authorization) for it to work.
 
 ---
-## How To Use
+## HOW TO USE
 ### Initial Setup
 **The welcome screen configuration settings are used each time Taptix starts.** I suggest you keep the defaults at first and change them later—once you familiarize yourself with how the Workflow works. To access the configuration screen again, right-click the workflow in Alfred's sidebar and select "Configure..."
 
@@ -49,7 +49,7 @@ Triggers have been color coded for easy setup:
 *Hotkeys and external triggers are optional, providing quick access to your most-used actions.*
 
 ---
-## Custom Sounds
+## CUSTOM SOUNDS
 **Want different sounds or to record your own? It's easy!** When you choose a "Custom Path for Sounds" in the workflow setup, Taptix looks for this structure:
 
 ```
@@ -66,13 +66,13 @@ If `keyboards` and `mice` folders aren't there when you activate Taptix, the Wor
 * **To use custom sounds and the included ones, copy the Workflow's sounds** (right-click Taptix in Alfred's sidebar -> Open in Finder -> assets/sounds) to your custom folder. Taptix uses either the default or custom folder, not both.
 
 ---
-## Contributions Welcome!
+## CONTRIBUTIONS WELCOME!
 Taptix currently has a limited number of sound packs. **If you have high-quality recordings of your mechanical keyboards or mice, feel free to share them with the community!** You can provide a download link or create a pull request.
 
 **I'm more interested in good quality, stereo/closely recorded sound packs than having as many sounds as possible.** I'll be happy to include your contributions if they meet these standards. 
 
 ---
-## For Automation Ninjas
+## FOR AUTOMATION NINJAS
 Taptix has two external triggers (yellow color-coded) which can control the workflow via Alfred's URL scheme or AppleScript. The `mainMenu` external trigger simply opens the main menu. The `cmd` external trigger can receive the following arguments:
 
 | ARGUMENT                 | ACTION                                |
@@ -111,7 +111,7 @@ The `cmd` trigger can also receive any of the following advanced arguments once 
 Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” comma separated. If you create another workflow specifically for Taptix triggers, or if you want to integrate it with other automation apps, you can use this as a way to trigger custom presets. For example, you can send the following in a single argument: `set_keyboard Nocfree Lite Soft,set_mouse Logitech Master 3S,set_keyboard_volume 9,set_mouse_volume 4`
 
 ---
-## Authorization
+## AUTHORIZATION
 **Taptix is a small app. Unfortunately, I'm not a developer nor have a way to notarize it.** When you first run the workflow, you'll see a warning. You can either trust the app or compile it from the source code.
 
 <p align="center">
