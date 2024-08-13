@@ -149,6 +149,6 @@ I believe this is possible to customize by modifying the [source code](https://g
 ## THANK YOU
 Up until now I’ve been using the fantastic [Klack](https://tryklack.com/) app for mechanical keyboard sounds. I still think it is the best in the game. However, it lacks mouse sounds and you cannot create your own sound packs: two things that were important for me. I discovered the open-source project [Type Joy](https://github.com/webdevcody/type-joy)—which was inspired by Klack—and thought it looked simple enough to give this a go. Taptix is a fork of Type Joy and a result of many hours of trying to figure out some bugs, adding features, and customizing it so that it would work well inside Alfred. I would have never been able to do this without the help of Sonnet 3.5. I still know very little of how everything works, and almost nothing about Go, to be honest.
 
-Thank you so much for trying this out!
+Thank you Klack and thank you Type Joy for the inspiration. And thank you so much guys for trying this out!
 
 *If you find Taptix fun or useful, I would greatly appreciate your support by buying me a coffee at ~[THIS LINK](https://www.buymeacoffee.com/afadingthought)~. Your generosity would mean the world to me!*
