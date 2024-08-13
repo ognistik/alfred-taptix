@@ -21,8 +21,8 @@ Install Go with [Homebrew](https://brew.sh/):
   You may use the following when running Taptix:
   * `-ks "Keyboard Sound"` for keyboard.
   * `-ms "Mouse Sound"` for mouse.
-  * `-v 4.5` for global volume in scale 0 to 10 (Higher values are can be set, with possible distortion).
-  * `-kv` and `-mv` for keyboard and mouse volumes, with number value from 0 to 10 (Higher values are can be set, with possible distortion).
+  * `-v 4.5` for global volume in scale 0 to 10 (Higher values can be set, with possible distortion).
+  * `-kv` and `-mv` for keyboard and mouse volumes, with number values from 0 to 10 (Higher values can be set, with possible distortion).
   * `-sp "PATH"` can receive a different path for the parent folder of sounds.
   * If the `-mk` argument is passed, the app will initialize with the keyboard sounds muted. 
   * Similarly, `-mm` will mute the mouse sounds when initializing.
