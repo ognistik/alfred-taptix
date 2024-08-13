@@ -3,7 +3,9 @@
 
 ## Getting Go
 Taptix is an app built with Go.
-Install Go with [Homebrew](https://brew.sh/): `brew install go`
+
+Install Go with [Homebrew](https://brew.sh/):
+`brew install go`
 
 ## How to Run
 1. `go mod tidy`
