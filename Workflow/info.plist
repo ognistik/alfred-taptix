@@ -1587,7 +1587,68 @@ done</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string># TAPTIX
+**Mechanical Keyboard and Mouse Sounds for Alfred**
+![](assets/images/taptix-s.png)
+[Visit on Github](https://github.com/ognistik/alfred-taptix) 
+
+## FEATURES
+* Realistic sound playback for key presses (up and down) and mouse clicks.
+* Custom sounds for spacebar and return key.
+* Randomized sounds for other keys to enhance realism and simplify custom sound packs.
+* Customizable settings:
+  * Keyboard and mouse sounds.
+  * Global and per-device volume.
+  * Mute status per device.
+  * Do not disturb mode.
+* Easy access to settings via Alfred's search bar, keyboard shortcuts, or external triggers.
+* Advanced: Create custom presets by modifying multiple settings at once using external triggers.
+
+---
+## INSTALLATION
+1. Check the [latest release](https://github.com/ognistik/alfred-taptix/releases/latest) and install the `.alfredworkflow` file.
+2. [Authorize Taptix](https://github.com/ognistik/alfred-taptix#authorization) for it to work.
+
+---
+## HOW TO USE
+### Initial Setup
+**The welcome screen configuration settings are used each time Taptix starts.** I suggest you keep the defaults at first and change them later—once you familiarize yourself with how the Workflow works. To access the configuration screen again, right-click the workflow in Alfred's sidebar and select "Configure..."
+
+![](assets/images/image01.jpg)
+
+### Alfred’s Search Bar
+Activate Taptix and modify its settings while running with the “tt” or “taptix” keywords. The menu options are self explanatory, but there’s two things you must know.
+1. Fuzzy search is supported (e.g., "tt sk" for "Set Keyboard Sound").
+2. Hold CMD or OPT when selecting "Set Volume" to adjust keyboard or mouse volume separately.
+
+### Hotkeys &amp; External Triggers
+Triggers have been color coded for easy setup:
+* **Green:** Basic toggles for Taptix activation and main menu.
+* **Blue:** By using these hotkeys you can bypass the main menu.
+* **Yellow**: These are external triggers that allow total control of Taptix, and they also allow to change multiple settings at once. **[Read more about the possible arguments](https://github.com/ognistik/alfred-taptix#for-automation-ninjas)**.
+
+*Hotkeys and external triggers are optional, providing quick access to your most-used actions.*
+
+---
+## CUSTOM SOUNDS
+**Want different sounds or to record your own? It's easy!** When you choose a "Custom Path for Sounds" in the workflow setup, Taptix looks for this structure:
+
+```
+CustomPath/keyboards/keyboard name/(audio files)
+CustomPath/mice/mouse name/(audio files)
+```
+
+If `keyboards` and `mice` folders aren't there when you activate Taptix, the Workflow creates them with sample sound packs. Just replace the audio files with yours, and add as many keyboard or mouse folders as you like. Audio files must be named exactly like the samples, be mp3s (stereo and close-up recording recommended), and well-trimmed to avoid lag.
+
+**IMPORTANT:**
+* **If you don't want custom sounds, leave this configuration field blank.** The Workflow will use default sounds.
+* **You need both mouse and keyboard sounds to use Taptix.** If you only want keyboard sounds, include at least one mouse sound pack and mute it in settings.
+* **Make sure your keyboard and mouse names in the configuration match your sound pack folders.** Taptix won't start if it can't find them.
+* **To use custom sounds and the included ones, copy the Workflow's sounds** (right-click Taptix in Alfred's sidebar -&gt; Open in Finder -&gt; assets/sounds) to your custom folder. Taptix uses either the default or custom folder, not both.
+
+---
+## MORE
+Do you have some sound packs you'd like to share? Read more about how to contribute, FAQs, report bugs, and more [over at Github](https://github.com/ognistik/alfred-taptix).</string>
 	<key>uidata</key>
 	<dict>
 		<key>05208619-B851-4028-883E-4D61652B69F9</key>
@@ -1926,7 +1987,7 @@ done</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Keyboard sound used when initializing.</string>
 			<key>label</key>
 			<string>Keyboard Sound</string>
 			<key>type</key>
@@ -1947,7 +2008,7 @@ done</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Mouse sound used when initializing.</string>
 			<key>label</key>
 			<string>Mouse Sound</string>
 			<key>type</key>
@@ -1972,7 +2033,7 @@ done</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Sets the highest volume threshold.</string>
 			<key>label</key>
 			<string>Global Volume</string>
 			<key>type</key>
@@ -1997,7 +2058,7 @@ done</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Control the keyboard volume individually.</string>
 			<key>label</key>
 			<string>Keyboard Volume</string>
 			<key>type</key>
@@ -2022,7 +2083,7 @@ done</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Control the mouse volume individually.</string>
 			<key>label</key>
 			<string>Mouse Volume</string>
 			<key>type</key>
@@ -2079,7 +2140,7 @@ done</string>
 				<string>Do Not Disturb</string>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>By default, when Taptix is active there are notifications every time you change device sound or modify their volume. You can optionally turn these off.</string>
 			<key>label</key>
 			<string>Notifications</string>
 			<key>type</key>
@@ -2100,7 +2161,7 @@ done</string>
 				<false/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>If left blank, Taptix will use its default sound packs. Read the documentation on how to set your own custom sounds.</string>
 			<key>label</key>
 			<string>Custom Path for Sounds</string>
 			<key>type</key>
@@ -2109,8 +2170,6 @@ done</string>
 			<string>soundsPath</string>
 		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
 	<string>1.0.0</string>
 	<key>webaddress</key>

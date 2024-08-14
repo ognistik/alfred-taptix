@@ -17,8 +17,8 @@ function run(argv) {
     var globalVolume = $.getenv('globalVolume');
     var keyboardVolume = $.getenv('keyboardVolume');
     var mouseVolume = $.getenv('mouseVolume');
-    var muteKeyboard = $.getenv('keyboardVolume') === '1';
-    var muteMouse = $.getenv('keyboardVolume') === '1';
+    var muteKeyboard = $.getenv('muteKeyboard') === '1';
+    var muteMouse = $.getenv('muteMouse') === '1';
     var soundsPath = $.getenv('soundsPath') || 'assets/sounds';
     var theArguments = `-ks "${keyboardSound}" -ms "${mouseSound}" -v ${globalVolume} -kv ${keyboardVolume} -mv ${mouseVolume} -sp "${soundsPath}"`;
     
