@@ -1648,7 +1648,7 @@ If `keyboards` and `mice` folders aren't there when you activate Taptix, the Wor
 
 ---
 ## MORE
-Do you have some sound packs you'd like to share? Read more about how to contribute, FAQs, report bugs, and more [over at Github](https://github.com/ognistik/alfred-taptix).</string>
+Do you have some sound packs you'd like to share? Read about how to contribute, FAQs, report bugs, and more [over at Github](https://github.com/ognistik/alfred-taptix).</string>
 	<key>uidata</key>
 	<dict>
 		<key>05208619-B851-4028-883E-4D61652B69F9</key>
@@ -2170,9 +2170,11 @@ Do you have some sound packs you'd like to share? Read more about how to contrib
 			<string>soundsPath</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
 	<string>1.0.0</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/ognistik/alfred-taptix</string>
 </dict>
 </plist>
