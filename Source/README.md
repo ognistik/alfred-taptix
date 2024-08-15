@@ -12,6 +12,7 @@ Install Go with [Homebrew](https://brew.sh/):
 2. `go run main.go`
 
 ## How to Compile
+To compile for your current system:
 `go build -o taptix main.go`
 
 If you want to compile for both Apple Silicon and Intel, you may need to do something like this:
