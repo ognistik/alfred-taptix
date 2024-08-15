@@ -14,6 +14,16 @@ Install Go with [Homebrew](https://brew.sh/):
 ## How to Compile
 `go build -o taptix main.go`
 
+If you want to compile for both Apple Silicon and Intel, you may need to do something like this:
+```
+go mod tidy
+CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -o taptix-arm64 main.go
+CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o taptix-amd64 main.go
+lipo -create -output taptix taptix-arm64 taptix-amd64
+```
+
+Note... you may also need Xcode Command Line Tools installed: `xcode-select --install`
+
 ## Run the Compiled App as a Background Process
 `nohup ./taptix &`
 
