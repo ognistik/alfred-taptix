@@ -71,7 +71,7 @@ If `keyboards` and `mice` folders aren't there when you activate Taptix, the Wor
 ## CONTRIBUTIONS WELCOME!
 Taptix currently has a limited number of sound packs. **If you have high-quality recordings of your mechanical keyboards or mice, feel free to share them with the community!** You can provide a download link or create a pull request.
 
-**I'm more interested in good quality, stereo/closely recorded sound packs than having as many sounds as possible.** I'll be happy to include your contributions if they meet these standards. 
+**I'm more interested in good quality, stereo/closely recorded sound packs than having as many sounds as possible.** I'll be happy to include your contributions (and give you credit) if they meet these standards. 
 
 ---
 ## FOR AUTOMATION NINJAS
