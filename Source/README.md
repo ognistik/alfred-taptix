@@ -12,10 +12,10 @@ Install Go with [Homebrew](https://brew.sh/):
 2. `go run main.go`
 
 ## How to Compile
-`go build -o type-joy main.go`
+`go build -o taptix main.go`
 
 ## Run the Compiled App as a Background Process
-`nohup ./type-joy &`
+`nohup ./taptix &`
 
 ## Available Arguments and Flags
   You may use the following when running Taptix:
