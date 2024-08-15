@@ -135,7 +135,7 @@ Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” com
 
 **When you click "Open" a Terminal window will unsuccessfully attempt to initialize Taptix. Don't worry, this only means you've successfully authorized the app.** You can close Terminal and use the Workflow without issues.
 
-If you opt to compile the app yourself you'll need to clone this repo and have Go in your system. Further instructions in THIS README. Once done, simply replace the "taptix" file inside the Workflow's folder with the one you've compiled yourself.
+If you opt to compile the app yourself you'll need to clone this repo and have Go in your system. Further instructions in [THIS README](https://github.com/ognistik/alfred-taptix/blob/main/Source/README.md). Once done, simply replace the "taptix" file inside the Workflow's folder with the one you've compiled yourself.
 
 **Sorry for this inconvenience!**
 
