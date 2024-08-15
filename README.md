@@ -5,7 +5,7 @@
     <img width="300" src="Workflow/assets/images/taptix.png">
   </a>
 </p>
-<p align="center"><em><a href="https://youtu.be/_Xd86bBDAco">|Video Overview & Setup|</a></em></p>
+<p align="center"><em><a href="https://youtu.be/_Xd86bBDAco">—Video Overview & Setup—</a></em></p>
 
 ## WHAT IS TAPTIX?
 Taptix is a lightweight Go app that adds mechanical keyboard and mouse sounds to your system interactions. It integrates with [Alfred](https://www.alfredapp.com/), giving you flexible control and customization options.
