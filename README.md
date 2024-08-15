@@ -84,7 +84,7 @@ Taptix has two external triggers (yellow color-coded) which can control the work
 | `set_keyboard`           | Set keyboard menu options             |
 | `set_volume`             | Set global volume with Alfred’s bar   |
 | `set_mouse_volume`       | Set mouse volume with Alfred’s bar    |
-| set_keyboard_volume      | Set keyboard volume with Alfred’s bar |
+| `set_keyboard_volume`      | Set keyboard volume with Alfred’s bar |
 
 The `cmd` trigger can also receive any of the following advanced arguments once Taptix is active, and in this way completely bypass the use of Alfred’s bar:
 
