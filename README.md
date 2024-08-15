@@ -131,6 +131,8 @@ Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” com
   <img width="300" src="Workflow/assets/images/image03.jpg">
 </p>
 
+*NOTE: If you are on Sequoia, you may need [some extra steps](https://mjtsai.com/blog/2024/07/05/sequoia-removes-gatekeeper-contextual-menu-override/)...*
+
 **When you click "Open" a Terminal window will unsuccessfully attempt to initialize Taptix. Don't worry, this only means you've successfully authorized the app.** You can close Terminal and use the Workflow without issues.
 
 If you opt to compile the app yourself you'll need to clone this repo and have Go in your system. Further instructions in THIS README. Once done, simply replace the "taptix" file inside the Workflow's folder with the one you've compiled yourself.
