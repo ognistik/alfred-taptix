@@ -42,8 +42,6 @@ Note... you may also need Xcode Command Line Tools installed: `xcode-select --in
 The following can control Taptix while running, even if it's running in the background.
 
 ```bash
-echo "set_keyboard \"new keyboard\" \"keyboards path\"" | nc localhost 8080 # The Keyboard path is optional. Sounds should still be inside a "keyboards" folder.
-echo "set_mouse \"new mouse\" \"mice path\"" | nc localhost 8080 # The Mice path is optional. Sounds should still be inside a "mice" folder.
 echo "set_volume 4.5" | nc localhost 8080
 echo "set_keyboard_volume 5" | nc localhost 8080
 echo "set_mouse_volume 5" | nc localhost 8080
@@ -59,12 +57,17 @@ echo "get_volume" | nc localhost 8080
 echo "get_keyboard_volume" | nc localhost 8080
 echo "get_mouse_volume" | nc localhost 8080
 echo "quit" | nc localhost 8080
+
+# The keyboard path and mouice in the following is optional. 
+# Sounds should still be inside a "keyboards" or "mice" folder.
+echo "set_keyboard \"new keyboard\" \"keyboards path\"" | nc localhost 8080
+echo "set_mouse \"new mouse\" \"mice path\"" | nc localhost 8080
 ```
 
 ## Additions and Fixes from Original Code
 * Fixed issue where modifiers were not recognized.
 * Fixed mouse clicks not being initialized until key was pressed.
-* Mouse and Keyboard sounds are loaded separately, from different directories: `keyboards` and `mice` respectively, below the parent soundPath.
+* Mouse and Keyboard sounds are loaded separately, from different directories: `keyboards` and `mice` respectively, below their own parent paths which can also be different.
 * Added separate global and per device volume and muting controls.
 * Implemented arguments to be used with their own flags. Arguments can be inserted in any order and without one another when running the app.
 * Added a "listener" and commands to control Taptix while running.
