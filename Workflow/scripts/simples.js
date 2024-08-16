@@ -19,52 +19,62 @@ function run(argv) {
     var mouseVolume = $.getenv('mouseVolume');
     var muteKeyboard = $.getenv('muteKeyboard') === '1';
     var muteMouse = $.getenv('muteMouse') === '1';
-    var soundsPath = $.getenv('soundsPath') || 'assets/sounds';
-    var theArguments = `-ks "${keyboardSound}" -ms "${mouseSound}" -v ${globalVolume} -kv ${keyboardVolume} -mv ${mouseVolume} -sp "${soundsPath}"`;
-    
-    if (soundsPath !== 'assets/sounds') {
-      var keyboardsPath = soundsPath + '/keyboards';
-      var micePath = soundsPath + '/mice';
-      
-      var createdKeyboards = false;
-      var createdMice = false;
-  
-      if (runCommand('test -d "' + keyboardsPath + '" && echo 1 || echo 0') !== '1') {
-          runCommand('mkdir -p "' + keyboardsPath + '"');
-          createdKeyboards = true;
-      }
-  
-      if (runCommand('test -d "' + micePath + '" && echo 1 || echo 0') !== '1') {
-          runCommand('mkdir -p "' + micePath + '"');
-          createdMice = true;
-      }
-  
-      if (createdKeyboards) {
-          runCommand('cp -R "assets/sounds/keyboards/Nocfree Lite" "' + keyboardsPath + '"');
-      }
-  
-      if (createdMice) {
-          runCommand('cp -R "assets/sounds/mice/Magic Mouse" "' + micePath + '"');
-      }
+    var bothPaths = $.getenv('bothPaths') === '1';
+    var soundsPath = $.getenv('soundsPath');
+
+    var keyboardsPath, micePath;
+
+    if (bothPaths) {
+        if (!soundsPath) {
+            keyboardsPath = 'assets/sounds';
+            micePath = 'assets/sounds';
+        } else {
+            var defaultKeyboardPath = 'assets/sounds/keyboards/' + keyboardSound;
+            var defaultMousePath = 'assets/sounds/mice/' + mouseSound;
+            
+            keyboardsPath = runCommand('test -d "' + defaultKeyboardPath + '" && echo 1 || echo 0') === '1' ? 'assets/sounds' : soundsPath;
+            micePath = runCommand('test -d "' + defaultMousePath + '" && echo 1 || echo 0') === '1' ? 'assets/sounds' : soundsPath;
+        }
+    } else {
+        keyboardsPath = soundsPath || 'assets/sounds';
+        micePath = soundsPath || 'assets/sounds';
+    }
+
+    var theArguments = `-ks "${keyboardSound}" -ms "${mouseSound}" -v ${globalVolume} -kv ${keyboardVolume} -mv ${mouseVolume} -kp "${keyboardsPath}" -mp "${micePath}"`;
+
+    if (keyboardsPath !== 'assets/sounds') {
+        var fullKeyboardsPath = keyboardsPath + '/keyboards';
+        if (runCommand('test -d "' + fullKeyboardsPath + '" && echo 1 || echo 0') !== '1') {
+            runCommand('mkdir -p "' + fullKeyboardsPath + '"');
+            runCommand('cp -R "assets/sounds/keyboards/Nocfree Lite" "' + fullKeyboardsPath + '"');
+        }
+    }
+
+    if (micePath !== 'assets/sounds') {
+        var fullMicePath = micePath + '/mice';
+        if (runCommand('test -d "' + fullMicePath + '" && echo 1 || echo 0') !== '1') {
+            runCommand('mkdir -p "' + fullMicePath + '"');
+            runCommand('cp -R "assets/sounds/mice/Magic Mouse" "' + fullMicePath + '"');
+        }
     }
 
     if (muteKeyboard) {
-      theArguments += ' -mk';
+        theArguments += ' -mk';
     }
     if (muteMouse) {
-      theArguments += ' -mm';
+        theArguments += ' -mm';
     }
 
     return JSON.stringify({
-      alfredworkflow: {
-        arg: "activate",
-        variables: {
-            theKeyboard: keyboardSound,
-            theMouse: mouseSound,
-            theArguments: theArguments
+        alfredworkflow: {
+            arg: "activate",
+            variables: {
+                theKeyboard: keyboardSound,
+                theMouse: mouseSound,
+                theArguments: theArguments
+            }
         }
-    }
-  });
+    });
   }
 
   return 'Unknown command';

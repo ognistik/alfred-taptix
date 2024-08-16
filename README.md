@@ -38,9 +38,10 @@ Taptix is a lightweight Go app that adds mechanical keyboard and mouse sounds to
 </p>
 
 ### Alfred’s Search Bar
-Activate Taptix and modify its settings while running with the “tt” or “taptix” keywords. The menu options are self explanatory, but there’s two things you must know.
+Activate Taptix and modify its settings while running with “taptix” or custom keyword ("tt" by default).
 1. Fuzzy search is supported (e.g., "tt sk" for "Set Keyboard Sound").
-2. Hold CMD or OPT when selecting "Set Volume" to adjust keyboard or mouse volume separately.
+2. Hold CMD on the option "Activate" or "Deactivate" to quickly open Taptix' configuration.
+3. Hold CMD or OPT when selecting "Set Volume" to adjust keyboard or mouse volume separately.
 
 ### Hotkeys & External Triggers
 Triggers have been color coded for easy setup:
@@ -59,17 +60,18 @@ CustomPath/keyboards/keyboard name/(audio files)
 CustomPath/mice/mouse name/(audio files)
 ```
 
-If `keyboards` and `mice` folders aren't there when you activate Taptix, the Workflow creates them with sample sound packs. Just replace the audio files with yours, and add as many keyboard or mouse folders as you like. Audio files must be named exactly like the samples, be mp3s (stereo and close-up recording recommended), and well-trimmed to avoid lag.
+If `keyboards` and `mice` folders aren't there when Taptix is looking for them (this will also depend on your "Extended Sound Packs" selection), the Workflow creates them with sample sound packs. Just replace the audio files with yours, and add as many keyboard or mouse folders as you like. Audio files must be named exactly like the samples, be mp3s (stereo and close-up recording recommended), and well-trimmed to avoid lag.
 
 **IMPORTANT:**
 * **If you don't want custom sounds, leave this configuration field blank.** The Workflow will use default sounds.
-* **You need both mouse and keyboard sounds to use Taptix.** If you only want keyboard sounds, include at least one mouse sound pack and mute it in settings.
+* **You need both mouse and keyboard sounds to use Taptix.** If you only want keyboard sounds, you can mute the mous in the configuration.
 * **Make sure your keyboard and mouse names in the configuration match your sound pack folders.** Taptix won't start if it can't find them.
-* **To use custom sounds and the included ones, copy the Workflow's sounds** (right-click Taptix in Alfred's sidebar -> Open in Finder -> assets/sounds) to your custom folder. Taptix uses either the default or custom folder, not both.
+* **To use custom sounds plus the included ones, select the Extended Sound Packs Option** Otherwise, Taptix will use either the default sounds or the ones in the custom path (if one is set). It won't look in both locations. This option is meant to give users the flexibility to only use their own sound packs if they prefer.
+* **It is possible to use a custom keyboard sound pack together with a default mouse pack or viceversa.** Simply select the Extended Sound Packs Option. For each device sound pack, Taptix will look in its default path first. Only if no packs with the specified name are found within the workflow's directory will it look for sounds in the user's custom path.
 
 ---
 ## CONTRIBUTIONS WELCOME!
-Taptix currently has a limited number of sound packs. **If you have high-quality recordings of your mechanical keyboards or mice, feel free to share them with the community!** You can provide a download link or create a pull request.
+Taptix currently has a limited number of sound packs. **If you have high-quality recordings of your mechanical keyboards or mice, feel free to share them with the community!** You can provide me with a zipped download link (or let me know, you may want to upload to the repo directly).
 
 **I'm more interested in good quality, stereo/closely recorded sound packs than having as many sounds as possible.** I'll be happy to include your contributions (and give you credit) if they meet these standards. 
 
@@ -90,25 +92,27 @@ Taptix has two external triggers (yellow color-coded) which can control the work
 
 The `cmd` trigger can also receive any of the following advanced arguments once Taptix is active, and in this way completely bypass the use of Alfred’s bar:
 
-| ADVANCED ARGUMENTS            |
-|-------------------------------|
-| `set_keyboard Keyboard Sound` |
-| `set_mouse Mouse Sound`       |
-| `set_volume 4.5`              |
-| `set_keyboard_volume 5`       |
-| `set_mouse_volume 5`          |
-| `toggle_keyboard`             |
-| `toggle_mouse`                |
-| `mute_keyboard`               |
-| `mute_mouse`                  |
-| `unmute_keyboard`             |
-| `unmute_mouse`                |
-| `get_keyboard`                |
-| `get_mouse`                   |
-| `get_volume`                  |
-| `get_keyboard_volume`         |
-| `get_mouse_volume`            |
-| `quit`                        |
+| ADVANCED ARGUMENTS                |
+|-----------------------------------|
+| `set_keyboard "Keyboard Sound"`   |
+| `set_mouse "Mouse Sound"`         |
+| `set_volume 4.5`                  |
+| `set_keyboard_volume 5`           |
+| `set_mouse_volume 5`              |
+| `toggle_keyboard`                 |
+| `toggle_mouse`                    |
+| `mute_keyboard`                   |
+| `mute_mouse`                      |
+| `unmute_keyboard`                 |
+| `unmute_mouse`                    |
+| `get_keyboard`                    |
+| `get_mouse`                       |
+| `get_volume`                      |
+| `get_keyboard_volume`             |
+| `get_mouse_volume`                |
+| `quit`                            |
+
+*Note. The `set_keyboard` and `set_mouse` can optionally receive a second argument with the custom path for their sounds inside double quotes. If no second argument is sent, Taptix will look for the sounds in the same directory of the current keyboard or mouse sounds.*
 
 Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” comma separated. If you create another workflow specifically for Taptix triggers, or if you want to integrate it with other automation apps, you can use this as a way to trigger custom presets. For example, you can send the following in a single argument: `set_keyboard Nocfree Lite Soft,set_mouse Logitech Master 3S,set_keyboard_volume 9,set_mouse_volume 4`
 

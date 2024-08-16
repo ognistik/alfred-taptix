@@ -34,16 +34,16 @@ Note... you may also need Xcode Command Line Tools installed: `xcode-select --in
   * `-ms "Mouse Sound"` for mouse.
   * `-v 4.5` for global volume in scale 0 to 10 (Higher values can be set, with possible distortion).
   * `-kv` and `-mv` for keyboard and mouse volumes, with number values from 0 to 10 (Higher values can be set, with possible distortion).
-  * `-sp "PATH"` can receive a different path for the parent folder of sounds.
+  * `-kp "Keyboards Path"` and `-mp "Mice Path"` can each receive a different path for the parent folder of sounds.
   * If the `-mk` argument is passed, the app will initialize with the keyboard sounds muted. 
   * Similarly, `-mm` will mute the mouse sounds when initializing.
 
 ## Commands to Control Running Instance
 The following can control Taptix while running, even if it's running in the background.
 
-```
-echo "set_keyboard newkeyboard" | nc localhost 8080
-echo "set_mouse newmouse" | nc localhost 8080
+```bash
+echo "set_keyboard \"new keyboard\" \"keyboards path\"" | nc localhost 8080 # The Keyboard path is optional. Sounds should still be inside a "keyboards" folder.
+echo "set_mouse \"new mouse\" \"mice path\"" | nc localhost 8080 # The Mice path is optional. Sounds should still be inside a "mice" folder.
 echo "set_volume 4.5" | nc localhost 8080
 echo "set_keyboard_volume 5" | nc localhost 8080
 echo "set_mouse_volume 5" | nc localhost 8080

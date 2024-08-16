@@ -25,7 +25,8 @@ var (
     volume         float64
     keyboardVolume float64
     mouseVolume    float64
-    soundsPath     string
+    keyboardPath   string
+    mousePath      string
     muteKeyboard   bool
     muteMouse      bool
 	wg sync.WaitGroup
@@ -41,6 +42,40 @@ const (
 
 var sounds map[string][]byte = make(map[string][]byte)
 var keyMap = make(map[uint16]bool)
+
+func setKeyboard(conn net.Conn, newKeyboard, newPath string) {
+    path := keyboardPath
+    if newPath != "" {
+        path = newPath
+    }
+    if _, err := os.Stat(filepath.Join(path, "keyboards", newKeyboard)); os.IsNotExist(err) {
+        conn.Write([]byte(fmt.Sprintf("Keyboard sounds not found: %s\n", newKeyboard)))
+    } else {
+        keyboard = newKeyboard
+        if newPath != "" {
+            keyboardPath = newPath
+        }
+        loadSoundsForKeyboard(keyboard)
+        conn.Write([]byte(fmt.Sprintf("Keyboard set to: %s\n", keyboard)))
+    }
+}
+
+func setMouse(conn net.Conn, newMouse, newPath string) {
+    path := mousePath
+    if newPath != "" {
+        path = newPath
+    }
+    if _, err := os.Stat(filepath.Join(path, "mice", newMouse)); os.IsNotExist(err) {
+        conn.Write([]byte(fmt.Sprintf("Mouse sounds not found: %s\n", newMouse)))
+    } else {
+        mouse = newMouse
+        if newPath != "" {
+            mousePath = newPath
+        }
+        loadSoundsForMouse(mouse)
+        conn.Write([]byte(fmt.Sprintf("Mouse set to: %s\n", mouse)))
+    }
+}
 
 func loadSoundsForKeyboard(keyboard string) {
     keys := []string{"down1", "up1", "down2", "up2", "down3", "up3", "down4", "up4", "down5", "up5", "down6", "up6", "down7", "up7", "down_space", "up_space", "down_enter", "up_enter"}
@@ -61,9 +96,9 @@ func loadSound(deviceType, device, soundName string) {
     var err error
 
     if deviceType == "keyboard" {
-        soundFile, err = os.Open(filepath.Join(soundsPath, "keyboards", device, soundName+".mp3"))
+        soundFile, err = os.Open(filepath.Join(keyboardPath, "keyboards", device, soundName+".mp3"))
     } else {
-        soundFile, err = os.Open(filepath.Join(soundsPath, "mice", device, soundName+".mp3"))
+        soundFile, err = os.Open(filepath.Join(mousePath, "mice", device, soundName+".mp3"))
     }
 
     if err != nil {
@@ -214,13 +249,44 @@ func registerUnmutedMouseHandlers() {
     })
 }
 
+func parseQuotedCommand(command string) []string {
+    var parts []string
+    var part strings.Builder
+    inQuotes := false
+
+    for _, r := range command {
+        switch r {
+        case '"':
+            inQuotes = !inQuotes
+        case ' ':
+            if !inQuotes {
+                if part.Len() > 0 {
+                    parts = append(parts, part.String())
+                    part.Reset()
+                }
+            } else {
+                part.WriteRune(r)
+            }
+        default:
+            part.WriteRune(r)
+        }
+    }
+
+    if part.Len() > 0 {
+        parts = append(parts, part.String())
+    }
+
+    return parts
+}
+
 func main() {
     flag.StringVar(&keyboard, "ks", "Nocfree Lite", "Keyboard sound")
     flag.StringVar(&mouse, "ms", "Magic Mouse", "Mouse sound")
     flag.Float64Var(&volume, "v", 10.0, "Global volume (0-10)")
     flag.Float64Var(&keyboardVolume, "kv", 10.0, "Keyboard volume (0-10)")
     flag.Float64Var(&mouseVolume, "mv", 10.0, "Mouse volume (0-10)")
-    flag.StringVar(&soundsPath, "sp", "sounds", "Sounds path")
+    flag.StringVar(&keyboardPath, "kp", "sounds", "Keyboard sounds path")
+    flag.StringVar(&mousePath, "mp", "sounds", "Mouse sounds path")
     flag.BoolVar(&muteKeyboard, "mk", false, "Mute keyboard sounds")
     flag.BoolVar(&muteMouse, "mm", false, "Mute mouse sounds")
     flag.Parse()
@@ -230,11 +296,11 @@ func main() {
     keyboardVolume = keyboardVolume / 10
     mouseVolume = mouseVolume / 10
 
-    if _, err := os.Stat(filepath.Join(soundsPath, "keyboards", keyboard)); os.IsNotExist(err) {
+    if _, err := os.Stat(filepath.Join(keyboardPath, "keyboards", keyboard)); os.IsNotExist(err) {
         log.Fatalf("Keyboard sounds not found: %s", keyboard)
     }
 
-    if _, err := os.Stat(filepath.Join(soundsPath, "mice", mouse)); os.IsNotExist(err) {
+    if _, err := os.Stat(filepath.Join(mousePath, "mice", mouse)); os.IsNotExist(err) {
         log.Fatalf("Mouse sounds not found: %s", mouse)
     }
 
@@ -344,31 +410,31 @@ func handleConnection(conn net.Conn) {
     }
 
     command := strings.TrimSpace(string(buffer[:n]))
-    parts := strings.SplitN(command, " ", 2)
+    parts := parseQuotedCommand(command)
 
     switch parts[0] {
     case "set_keyboard":
-        if len(parts) > 1 {
-            newKeyboard := parts[1]
-            if _, err := os.Stat(filepath.Join(soundsPath, "keyboards", newKeyboard)); os.IsNotExist(err) {
-                conn.Write([]byte(fmt.Sprintf("Keyboard sounds not found: %s\n", newKeyboard)))
-            } else {
-                keyboard = newKeyboard
-                loadSoundsForKeyboard(keyboard)
-                conn.Write([]byte(fmt.Sprintf("Keyboard set to: %s\n", keyboard)))
-            }
+        if len(parts) < 2 || len(parts) > 3 {
+            conn.Write([]byte("Invalid command. Usage: set_keyboard \"<new_keyboard>\" [\"<new_path>\"]\n"))
+            return
         }
+        newKeyboard := parts[1]
+        newPath := ""
+        if len(parts) == 3 {
+            newPath = parts[2]
+        }
+        setKeyboard(conn, newKeyboard, newPath)
     case "set_mouse":
-        if len(parts) > 1 {
-            newMouse := parts[1]
-            if _, err := os.Stat(filepath.Join(soundsPath, "mice", newMouse)); os.IsNotExist(err) {
-                conn.Write([]byte(fmt.Sprintf("Mouse sounds not found: %s\n", newMouse)))
-            } else {
-                mouse = newMouse
-                loadSoundsForMouse(mouse)
-                conn.Write([]byte(fmt.Sprintf("Mouse set to: %s\n", mouse)))
-            }
+        if len(parts) < 2 || len(parts) > 3 {
+            conn.Write([]byte("Invalid command. Usage: set_mouse \"<new_mouse>\" [\"<new_path>\"]\n"))
+            return
         }
+        newMouse := parts[1]
+        newPath := ""
+        if len(parts) == 3 {
+            newPath = parts[2]
+        }
+        setMouse(conn, newMouse, newPath)
     case "set_volume":
         if len(parts) > 1 {
             newVolume, err := parseVolume(parts[1])

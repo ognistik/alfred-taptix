@@ -251,6 +251,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>6536905C-8CF0-4F1C-A3EA-73E6EE9F52FE</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>47FB74A3-6EC4-4F1C-AD61-E8FDADC5BBC9</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>71D519E4-5A48-43BA-A248-5C2EBC40CDD1</key>
 		<array>
 			<dict>
@@ -493,6 +506,18 @@
 				<string></string>
 				<key>sourceoutputuid</key>
 				<string>2DC8FE4A-DB59-4A0F-BDF1-87C17D2422B5</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>6536905C-8CF0-4F1C-A3EA-73E6EE9F52FE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>8765EE18-7F97-42B1-90E4-E20E7240FEE9</string>
 				<key>vitoclose</key>
 				<false/>
 			</dict>
@@ -907,7 +932,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>tt||taptix</string>
+				<string>{var:theKw}||taptix</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -1007,6 +1032,29 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>tell application id "com.runningwithcrayons.Alfred" to reveal workflow (system attribute "alfred_workflow_bundleid") with configuration</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>47FB74A3-6EC4-4F1C-AD61-E8FDADC5BBC9</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>conditions</key>
 				<array>
 					<dict>
@@ -1022,6 +1070,20 @@
 						<string>Activate</string>
 						<key>uid</key>
 						<string>2DC8FE4A-DB59-4A0F-BDF1-87C17D2422B5</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:theAction}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>config</string>
+						<key>outputlabel</key>
+						<string>Configuration</string>
+						<key>uid</key>
+						<string>8765EE18-7F97-42B1-90E4-E20E7240FEE9</string>
 					</dict>
 				</array>
 				<key>elselabel</key>
@@ -1053,6 +1115,26 @@
 			<string>alfred.workflow.utility.argument</string>
 			<key>uid</key>
 			<string>5003DD5F-F54D-429A-80D1-AF3B63F51877</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string></string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict>
+					<key>alfred_workflow_bundleid</key>
+					<string>{const:alfred_workflow_bundleid}</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>6536905C-8CF0-4F1C-A3EA-73E6EE9F52FE</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -1619,9 +1701,10 @@ done</string>
 ![](assets/images/image01.jpg)
 
 ### Alfred’s Search Bar
-Activate Taptix and modify its settings while running with the “tt” or “taptix” keywords. The menu options are self explanatory, but there’s two things you must know.
+Activate Taptix and modify its settings while running with “taptix” or custom keyword ("tt" by default). The menu options are self explanatory, but there’s three things you must know. The menu options are self explanatory, but there’s three things you must know.
 1. Fuzzy search is supported (e.g., "tt sk" for "Set Keyboard Sound").
-2. Hold CMD or OPT when selecting "Set Volume" to adjust keyboard or mouse volume separately.
+2. Hold CMD on the option "Activate" or "Deactivate" to quickly open Taptix' configuration.
+3. Hold CMD or OPT when selecting "Set Volume" to adjust keyboard or mouse volume separately.
 
 ### Hotkeys &amp; External Triggers
 Triggers have been color coded for easy setup:
@@ -1764,9 +1847,18 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 		<key>449F4C10-2618-4DC6-9844-2B54E6402123</key>
 		<dict>
 			<key>xpos</key>
-			<real>1355</real>
+			<real>1380</real>
 			<key>ypos</key>
 			<real>330</real>
+		</dict>
+		<key>47FB74A3-6EC4-4F1C-AD61-E8FDADC5BBC9</key>
+		<dict>
+			<key>note</key>
+			<string>Configure workflow</string>
+			<key>xpos</key>
+			<real>1185</real>
+			<key>ypos</key>
+			<real>355</real>
 		</dict>
 		<key>4E15C976-7920-4881-AFA4-C68BFB049166</key>
 		<dict>
@@ -1796,6 +1888,13 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<real>95</real>
 			<key>ypos</key>
 			<real>695</real>
+		</dict>
+		<key>6536905C-8CF0-4F1C-A3EA-73E6EE9F52FE</key>
+		<dict>
+			<key>xpos</key>
+			<real>1070</real>
+			<key>ypos</key>
+			<real>385</real>
 		</dict>
 		<key>71D519E4-5A48-43BA-A248-5C2EBC40CDD1</key>
 		<dict>
@@ -1833,7 +1932,7 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<key>note</key>
 			<string>Main Menu</string>
 			<key>xpos</key>
-			<real>660</real>
+			<real>415</real>
 			<key>ypos</key>
 			<real>335</real>
 		</dict>
@@ -1976,6 +2075,27 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 	</dict>
 	<key>userconfigurationconfig</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>tt</string>
+				<key>placeholder</key>
+				<string>tt</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Taptix Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>theKw</string>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -2163,7 +2283,7 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>If left blank, Taptix will use its default sound packs. Read the documentation on how to set your own custom sounds.</string>
+			<string>If left blank, Taptix will use its default sound packs only. Read the documentation on how to set your own custom sounds.</string>
 			<key>label</key>
 			<string>Custom Path for Sounds</string>
 			<key>type</key>
@@ -2171,9 +2291,26 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<key>variable</key>
 			<string>soundsPath</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string>Use Both: Default &amp; Custom Paths</string>
+			</dict>
+			<key>description</key>
+			<string>If this is selected, the workflow will search for sound packs in both: the default path &amp; user's custom path. If deselected, Taptix will use the default path OR the user custom path, not both.</string>
+			<key>label</key>
+			<string>Extended Sound Packs</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>bothPaths</string>
+		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
 	<string>1.0.2</string>
 	<key>webaddress</key>

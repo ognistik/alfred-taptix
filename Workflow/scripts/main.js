@@ -18,7 +18,14 @@ function run(argv) {
                 type: 'default',
                 title: "Activate Taptix",
                 subtitle: "Taptix is Not Currently Running",
-                arg: 'simple_activate'
+                arg: 'simple_activate',
+                mods: {
+					cmd: {
+						valid: true,
+						arg: "config",
+						subtitle: "Open Taptix Configuration"
+					}
+                }
             }]
         });
     }
@@ -28,7 +35,14 @@ function run(argv) {
             type: 'default',
             title: "Disable Taptix",
             subtitle: "Turn off all sounds",
-            arg: 'simple_deactivate'
+            arg: 'simple_deactivate',
+            mods: {
+                cmd: {
+                    valid: true,
+                    arg: "config",
+                    subtitle: "Open Taptix Configuration"
+                }
+            }
         },
         {
             type: 'default',

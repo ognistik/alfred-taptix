@@ -4,18 +4,51 @@ ObjC.import('Foundation');
 function run(argv) {
     var query = argv[0];
     var theAction = $.getenv('theAction');
-    var soundsPath = $.getenv('soundsPath') || 'assets/sounds';
 
     let items = [];
 
     if (theAction === 'set_keyboard' || theAction === 'set_mouse') {
+        var soundsPath = $.getenv('soundsPath');
+        var bothPaths = $.getenv('bothPaths') === '1';
+        var keyboardsPath, micePath;
+
+        if (bothPaths) {
+            if (!soundsPath) {
+                keyboardsPath = 'assets/sounds';
+                micePath = 'assets/sounds';
+            } else {
+                keyboardsPath = [soundsPath, 'assets/sounds'];
+                micePath = [soundsPath, 'assets/sounds'];
+            }
+        } else {
+            keyboardsPath = soundsPath || 'assets/sounds';
+            micePath = soundsPath || 'assets/sounds';
+        }
+
         const deviceType = theAction === 'set_keyboard' ? 'keyboard' : 'mouse';
-        const folderPath = `${soundsPath}/${deviceType === 'mouse' ? 'mice' : 'keyboards'}`;
         const currentDevice = runCommand(`echo "get_${deviceType}" | nc localhost 8080`).replace(`Current ${deviceType}: `, '');
-        
-        const folders = listFolders(folderPath);
-        
-        if (folders.length === 0 || (folders.length === 1 && folders[0] === currentDevice)) {
+
+        let folders = [];
+        let paths = deviceType === 'keyboard' ? (Array.isArray(keyboardsPath) ? keyboardsPath : [keyboardsPath]) : (Array.isArray(micePath) ? micePath : [micePath]);
+
+        paths.forEach(path => {
+            const folderPath = `${path}/${deviceType === 'mouse' ? 'mice' : 'keyboards'}`;
+            folders = folders.concat(listFolders(folderPath).map(folder => ({ folder, path })));
+        });
+
+        // Remove duplicates, prioritizing 'assets/sounds'
+        folders = folders.reduce((acc, current) => {
+            const x = acc.find(item => item.folder === current.folder);
+            if (!x) {
+                return acc.concat([current]);
+            } else if (current.path === 'assets/sounds') {
+                return acc.map(item => item.folder === current.folder ? current : item);
+            } else {
+                return acc;
+            }
+        }, []);
+
+        if (folders.length === 0 || (folders.length === 1 && folders[0].folder === currentDevice)) {
             items.push({
                 uid: `no_other_${deviceType}s`,
                 type: 'default',
@@ -24,14 +57,14 @@ function run(argv) {
                 arg: '',
             });
         } else {
-            folders.forEach(folder => {
+            folders.forEach(({ folder, path }) => {
                 if (folder !== currentDevice) {
                     items.push({
                         uid: `${deviceType}_${folder}`,
                         type: 'default',
                         title: folder,
                         subtitle: `USE IN TAPTIX | Currently Using ${currentDevice}`,
-                        arg: folder,
+                        arg: `"${folder}" "${path}"`,
                     });
                 }
             });
