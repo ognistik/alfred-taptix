@@ -58,10 +58,10 @@ echo "get_keyboard_volume" | nc localhost 8080
 echo "get_mouse_volume" | nc localhost 8080
 echo "quit" | nc localhost 8080
 
-# The keyboard path and mouice in the following is optional. 
-# Sounds should still be inside a "keyboards" or "mice" folder.
-echo "set_keyboard \"new keyboard\" \"keyboards path\"" | nc localhost 8080
-echo "set_mouse \"new mouse\" \"mice path\"" | nc localhost 8080
+# The keyboard path and mouse in the following is optional. 
+# Sounds should still be inside a "keyboards" or "mice" folder under the new path.
+echo "set_keyboard New Keyboard -sp /the new/path" | nc localhost 8080
+echo "set_mouse New Mouse -sp -/the new/path" | nc localhost 8080
 ```
 
 ## Additions and Fixes from Original Code
@@ -71,5 +71,5 @@ echo "set_mouse \"new mouse\" \"mice path\"" | nc localhost 8080
 * Added separate global and per device volume and muting controls.
 * Implemented arguments to be used with their own flags. Arguments can be inserted in any order and without one another when running the app.
 * Added a "listener" and commands to control Taptix while running.
-* Added custom thresholds for mouse/key down and up events, preventing an "up sound" when the up even happens under a specified time. Useful for use with trackpad.
-* Added custom threshold for multiple simultaneous key presses. If keys are pressed within this threshold, only one key will produce sound. Useful for automated tasks and multiple audio files playing at exactly the same time (raising the volume).
+* Added custom thresholds for mouse/key down and up events, preventing an "up sound" when the up even happens under a specified time (10 ms). Useful for use with trackpad.
+* Added custom threshold for multiple simultaneous key presses. If keys are pressed within this threshold (20 ms), only one key will produce sound. Useful for automated tasks and preventing multiple audio files playing at exactly the same time raising the volume.

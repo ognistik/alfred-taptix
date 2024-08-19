@@ -94,8 +94,8 @@ The `cmd` trigger can also receive any of the following advanced arguments once 
 
 | ADVANCED ARGUMENTS                |
 |-----------------------------------|
-| `set_keyboard "Keyboard Sound"`   |
-| `set_mouse "Mouse Sound"`         |
+| `set_keyboard Keyboard Sound`   |
+| `set_mouse Mouse Sound`         |
 | `set_volume 4.5`                  |
 | `set_keyboard_volume 5`           |
 | `set_mouse_volume 5`              |
@@ -112,7 +112,7 @@ The `cmd` trigger can also receive any of the following advanced arguments once 
 | `get_mouse_volume`                |
 | `quit`                            |
 
-*Note. The `set_keyboard` and `set_mouse` can optionally receive a second argument with the custom path for their sounds inside double quotes. If no second argument is sent, Taptix will look for the sounds in the same directory of the current keyboard or mouse sounds.*
+*Note. The `set_keyboard` and `set_mouse` can optionally receive a second argument with the custom path for their sounds with the flag -sp (no double quotes are needed, even if path includes spaces). If no second argument is sent, Taptix will look for the sounds in the same directory of the current keyboard or mouse sounds.*
 
 Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” comma separated. If you create another workflow specifically for Taptix triggers, or if you want to integrate it with other automation apps, you can use this as a way to trigger custom presets. For example, you can send the following in a single argument: `set_keyboard Nocfree Lite Soft,set_mouse Logitech Master 3S,set_keyboard_volume 9,set_mouse_volume 4`
 

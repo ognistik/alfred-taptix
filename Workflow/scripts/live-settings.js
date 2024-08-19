@@ -64,7 +64,7 @@ function run(argv) {
                         type: 'default',
                         title: folder,
                         subtitle: `USE IN TAPTIX | Currently Using ${currentDevice}`,
-                        arg: `"${folder}" "${path}"`,
+                        arg: `${folder} -sp ${path}`,
                     });
                 }
             });

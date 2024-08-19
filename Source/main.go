@@ -511,36 +511,6 @@ func registerUnmutedMouseHandlers() {
     })
 }
 
-func parseQuotedCommand(command string) []string {
-    var parts []string
-    var part strings.Builder
-    inQuotes := false
-
-    for _, r := range command {
-        switch r {
-        case '"':
-            inQuotes = !inQuotes
-        case ' ':
-            if !inQuotes {
-                if part.Len() > 0 {
-                    parts = append(parts, part.String())
-                    part.Reset()
-                }
-            } else {
-                part.WriteRune(r)
-            }
-        default:
-            part.WriteRune(r)
-        }
-    }
-
-    if part.Len() > 0 {
-        parts = append(parts, part.String())
-    }
-
-    return parts
-}
-
 func main() {
     flag.StringVar(&keyboard, "ks", "Nocfree Lite", "Keyboard sound")
     flag.StringVar(&mouse, "ms", "Magic Mouse", "Mouse sound")
@@ -628,31 +598,28 @@ func handleConnection(conn net.Conn) {
     }
 
     command := strings.TrimSpace(string(buffer[:n]))
-    parts := parseQuotedCommand(command)
+    parts := strings.SplitN(command, " ", 2)
 
     switch parts[0] {
-    case "set_keyboard":
-        if len(parts) < 2 || len(parts) > 3 {
-            conn.Write([]byte("Invalid command. Usage: set_keyboard \"<new_keyboard>\" [\"<new_path>\"]\n"))
+    case "set_keyboard", "set_mouse":
+        if len(parts) < 2 {
+            conn.Write([]byte(fmt.Sprintf("Invalid command. Usage: %s <new_name> [-sp <new_path>]\n", parts[0])))
             return
         }
-        newKeyboard := parts[1]
+
+        remainingParts := strings.SplitN(parts[1], " -sp ", 2)
+        newName := strings.TrimSpace(remainingParts[0])
         newPath := ""
-        if len(parts) == 3 {
-            newPath = parts[2]
+
+        if len(remainingParts) > 1 {
+            newPath = strings.TrimSpace(remainingParts[1])
         }
-        setKeyboard(conn, newKeyboard, newPath)
-    case "set_mouse":
-        if len(parts) < 2 || len(parts) > 3 {
-            conn.Write([]byte("Invalid command. Usage: set_mouse \"<new_mouse>\" [\"<new_path>\"]\n"))
-            return
+
+        if parts[0] == "set_keyboard" {
+            setKeyboard(conn, newName, newPath)
+        } else {
+            setMouse(conn, newName, newPath)
         }
-        newMouse := parts[1]
-        newPath := ""
-        if len(parts) == 3 {
-            newPath = parts[2]
-        }
-        setMouse(conn, newMouse, newPath)
     case "set_volume":
         if len(parts) > 1 {
             newVolume, err := parseVolume(parts[1])
