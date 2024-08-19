@@ -1459,10 +1459,12 @@ sleep 0.3 &amp;&amp; echo "$theAction $theArg" | nc localhost 8080</string>
 				<integer>0</integer>
 				<key>script</key>
 				<string># THESE VARIABLES MUST BE SET. SEE THE ONEUPDATER README FOR AN EXPLANATION OF EACH.
-readonly remote_info_plist='https://github.com/ognistik/alfred-taptix/blob/main/Workflow/info.plist'
-readonly workflow_url='ognistik/alfred-taptix'
-readonly download_type='github_release'
-readonly frequency_check='0'
+readonly remote_info_plist='https://raw.githubusercontent.com/ognistik/alfred-taptix/main/Workflow/info.plist'
+readonly workflow_url='https://raw.githubusercontent.com/ognistik/alfred-taptix/main/Taptix.alfredworkflow'
+readonly download_type='direct'
+readonly frequency_check='4'
+
+
 
 # FROM HERE ON, CODE SHOULD BE LEFT UNTOUCHED!
 function abort {
