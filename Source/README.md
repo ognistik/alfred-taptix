@@ -71,3 +71,5 @@ echo "set_mouse \"new mouse\" \"mice path\"" | nc localhost 8080
 * Added separate global and per device volume and muting controls.
 * Implemented arguments to be used with their own flags. Arguments can be inserted in any order and without one another when running the app.
 * Added a "listener" and commands to control Taptix while running.
+* Added custom thresholds for mouse/key down and up events, preventing an "up sound" when the up even happens under a specified time. Useful for use with trackpad.
+* Added custom threshold for multiple simultaneous key presses. If keys are pressed within this threshold, only one key will produce sound. Useful for automated tasks and multiple audio files playing at exactly the same time (raising the volume).

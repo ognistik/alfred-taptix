@@ -60,7 +60,7 @@ CustomPath/keyboards/keyboard name/(audio files)
 CustomPath/mice/mouse name/(audio files)
 ```
 
-If `keyboards` and `mice` folders aren't there when Taptix is looking for them (this will also depend on your "Extended Sound Packs" selection), the Workflow creates them with sample sound packs. Just replace the audio files with yours, and add as many keyboard or mouse folders as you like. Audio files must be named exactly like the samples, be mp3s (stereo and close-up recording recommended), and well-trimmed to avoid lag.
+If `keyboards` and `mice` folders aren't there when Taptix is looking for them (this will also depend on your "Extended Sound Packs" selection), the Workflow creates them with sample sound packs. Just replace the audio files with yours, and add as many keyboard or mouse folders as you like. Audio files must be named exactly like the samples, they should preferably be 24 or 16 bit Wav files , but they can also be mp3s (WAVS will play a tiny bit faster). Stereo and close-up recordings are recommended, and well-trimmed to avoid lag.
 
 **IMPORTANT:**
 * **If you don't want custom sounds, leave this configuration field blank.** The Workflow will use default sounds.

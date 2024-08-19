@@ -2192,7 +2192,7 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<key>config</key>
 			<dict>
 				<key>defaultvalue</key>
-				<integer>10</integer>
+				<integer>5</integer>
 				<key>markercount</key>
 				<integer>5</integer>
 				<key>maxvalue</key>
@@ -2312,7 +2312,7 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 		</dict>
 	</array>
 	<key>version</key>
-	<string>1.0.2</string>
+	<string>1.0.3</string>
 	<key>webaddress</key>
 	<string>https://github.com/ognistik/alfred-taptix</string>
 </dict>

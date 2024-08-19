@@ -13,10 +13,12 @@ import (
     "strconv"
     "strings"
     "sync"
+    "time"
 
     "github.com/hajimehoshi/go-mp3"
     "github.com/hajimehoshi/oto"
     hook "github.com/robotn/gohook"
+    "github.com/youpy/go-wav"
 )
 
 var (
@@ -29,19 +31,50 @@ var (
     mousePath      string
     muteKeyboard   bool
     muteMouse      bool
-	wg sync.WaitGroup
-    context *oto.Context
-	isMouseMuted   bool
+    wg             sync.WaitGroup
+    context        *oto.Context
+    contextMutex   sync.Mutex
+    isMouseMuted   bool
     mouseMutex     sync.Mutex
+    once           sync.Once
 )
 
 const (
-    ENTER uint16 = 36
-    SPACE uint16 = 49
+    ENTER           uint16 = 36
+    SPACE           uint16 = 49
+    THRESHOLD_MS    int64  = 10 // Threshold for key/mouse up events in milliseconds
+    MULTI_KEY_DELAY int64  = 20 // Delay for multi-key presses in milliseconds
 )
 
-var sounds map[string][]byte = make(map[string][]byte)
+var sounds map[string]*WavData = make(map[string]*WavData)
 var keyMap = make(map[uint16]bool)
+var lastKeyPressTime = make(map[uint16]int64)
+var lastKeyDownTime int64
+var lastKeyUpTime int64
+var keyState = make(map[uint16]bool)
+var lastMouseDownTime = make(map[uint16]int64)
+var lastMouseUpTime = make(map[uint16]int64)
+
+func initContext() {
+    once.Do(func() {
+        var err error
+        // Create a context with maximum quality settings
+        context, err = oto.NewContext(48000, 2, 2, 8192)
+        if err != nil {
+            log.Fatalf("failed to create oto context: %v", err)
+        }
+    })
+}
+
+func convert24To16(data []byte) []byte {
+    output := make([]byte, len(data)/3*2)
+    for i := 0; i < len(data); i += 3 {
+        // Convert 24-bit to 16-bit by dropping the least significant byte
+        output[i/3*2] = data[i+1]
+        output[i/3*2+1] = data[i+2]
+    }
+    return output
+}
 
 func setKeyboard(conn net.Conn, newKeyboard, newPath string) {
     path := keyboardPath
@@ -78,6 +111,9 @@ func setMouse(conn net.Conn, newMouse, newPath string) {
 }
 
 func loadSoundsForKeyboard(keyboard string) {
+    // Clear existing keyboard sounds
+    clearKeyboardSounds()
+    
     keys := []string{"down1", "up1", "down2", "up2", "down3", "up3", "down4", "up4", "down5", "up5", "down6", "up6", "down7", "up7", "down_space", "up_space", "down_enter", "up_enter"}
     for _, key := range keys {
         loadSound("keyboard", keyboard, key)
@@ -85,33 +121,94 @@ func loadSoundsForKeyboard(keyboard string) {
 }
 
 func loadSoundsForMouse(mouse string) {
+    // Clear existing mouse sounds
+    clearMouseSounds()
+
     keys := []string{"up_mouse", "down_mouse"}
     for _, key := range keys {
         loadSound("mouse", mouse, key)
     }
 }
 
+func clearKeyboardSounds() {
+    keyboardKeys := []string{"down1", "up1", "down2", "up2", "down3", "up3", "down4", "up4", "down5", "up5", "down6", "up6", "down7", "up7", "down_space", "up_space", "down_enter", "up_enter"}
+    for _, key := range keyboardKeys {
+        delete(sounds, key+".wav")
+        delete(sounds, key+".mp3")
+    }
+}
+
+func clearMouseSounds() {
+    mouseKeys := []string{"up_mouse", "down_mouse"}
+    for _, key := range mouseKeys {
+        delete(sounds, key+".wav")
+        delete(sounds, key+".mp3")
+    }
+}
+
+// loadSound attempts to load a WAV file first, then falls back to MP3 if WAV is not found
 func loadSound(deviceType, device, soundName string) {
-    var soundFile *os.File
-    var err error
-
+    var soundPath string
     if deviceType == "keyboard" {
-        soundFile, err = os.Open(filepath.Join(keyboardPath, "keyboards", device, soundName+".mp3"))
+        soundPath = filepath.Join(keyboardPath, "keyboards", device)
     } else {
-        soundFile, err = os.Open(filepath.Join(mousePath, "mice", device, soundName+".mp3"))
+        soundPath = filepath.Join(mousePath, "mice", device)
     }
 
+    wavPath := filepath.Join(soundPath, soundName+".wav")
+    mp3Path := filepath.Join(soundPath, soundName+".mp3")
+
+    // Try loading WAV file first
+    if wavData, err := loadWavFile(wavPath); err == nil {
+        sounds[soundName+".wav"] = wavData
+        log.Printf("Loaded WAV file: %s", soundName+".wav")
+        return
+    }
+
+    // If WAV file not found, try loading MP3 file
+    if data, err := os.ReadFile(mp3Path); err == nil {
+        sounds[soundName+".mp3"] = &WavData{Data: data, Format: nil}
+        log.Printf("Loaded MP3 file: %s", soundName+".mp3")
+        return
+    }
+
+    log.Fatalf("failed to load sound file for %s", soundName)
+}
+
+type WavData struct {
+    Data   []byte
+    Format *wav.WavFormat
+}
+
+func loadWavFile(path string) (*WavData, error) {
+    file, err := os.Open(path)
     if err != nil {
-        log.Fatalf("failed to open sound file: %v", err)
+        return nil, err
     }
-    defer soundFile.Close()
+    defer file.Close()
 
-    sound, err := io.ReadAll(soundFile)
+    reader := wav.NewReader(file)
+    format, err := reader.Format()
     if err != nil {
-        log.Fatalf("failed to read sound file: %v", err)
+        return nil, err
     }
 
-    sounds[soundName] = sound
+    data, err := io.ReadAll(reader)
+    if err != nil {
+        return nil, err
+    }
+
+    return &WavData{Data: data, Format: format}, nil
+}
+
+func loadMp3File(path string) ([]byte, error) {
+    file, err := os.Open(path)
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    return io.ReadAll(file)
 }
 
 func getRandomDownKey() string {
@@ -134,35 +231,107 @@ func adjustVolume(samples []byte, volume float64) []byte {
     return samples
 }
 
-func playSound(key string, deviceVolume float64) {
-    decoder, err := mp3.NewDecoder(bytes.NewReader(sounds[key]))
-    if err != nil {
-        log.Fatalf("failed to create MP3 decoder: %v", err)
+func playSound(soundName string, deviceVolume float64) {
+    initContext() // This will only initialize the context once
+
+    wavKey := soundName + ".wav"
+    mp3Key := soundName + ".mp3"
+
+    var wavData *WavData
+    var isWav bool
+
+    if data, ok := sounds[wavKey]; ok {
+        wavData = data
+        isWav = true
+    } else if data, ok := sounds[mp3Key]; ok {
+        wavData = data
+        isWav = false
+    } else {
+        log.Printf("Sound not found for: %s", soundName)
+        return
     }
 
+    var stream io.Reader
+    var err error
+
+    if isWav {
+        format := wavData.Format
+        if format.BitsPerSample == 24 {
+            // Convert 24-bit to 16-bit
+            wavData.Data = convert24To16(wavData.Data)
+            format.BitsPerSample = 16
+        }
+
+        // Resample if necessary
+        if format.SampleRate != 48000 {
+            wavData.Data = resampleAudio(wavData.Data, int(format.SampleRate), 48000, int(format.NumChannels))
+        }
+
+        stream = bytes.NewReader(wavData.Data)
+    } else {
+        stream, err = mp3.NewDecoder(bytes.NewReader(wavData.Data))
+        if err != nil {
+            log.Printf("failed to create MP3 decoder for %s: %v", soundName, err)
+            return
+        }
+    }
+
+    contextMutex.Lock()
     player := context.NewPlayer()
+    contextMutex.Unlock()
     defer player.Close()
 
-    decoder.Seek(0, 0)
-
-    buf := make([]byte, 8192)
+    // Read and play the audio data in chunks
+    buffer := make([]byte, 4096)
     for {
-        n, err := decoder.Read(buf)
-        if err != nil && err != io.EOF {
-            log.Printf("failed to read decoded audio: %v", err)
+        n, err := stream.Read(buffer)
+        if err == io.EOF {
             break
         }
-        if n == 0 {
-            break
+        if err != nil {
+            log.Printf("error reading audio data for %s: %v", soundName, err)
+            return
         }
-        adjustedBuf := adjustVolume(buf[:n], volume*deviceVolume)
-        player.Write(adjustedBuf)
+
+        adjustedData := adjustVolume(buffer[:n], volume*deviceVolume)
+        _, err = player.Write(adjustedData)
+        if err != nil {
+            log.Printf("failed to write audio data for %s: %v", soundName, err)
+            return
+        }
     }
+
+    // Ensure all audio data is played
+    player.Close()
+}
+
+func resampleAudio(data []byte, fromSampleRate, toSampleRate, channels int) []byte {
+    // Implement a simple linear interpolation resampling
+    // This is a basic implementation and might not provide the best audio quality
+    // For better quality, consider using a library like https://github.com/go-audio/audio
+    ratio := float64(toSampleRate) / float64(fromSampleRate)
+    outputLength := int(float64(len(data)) * ratio)
+    output := make([]byte, outputLength)
+
+    for i := 0; i < outputLength; i += 2 * channels {
+        position := float64(i) / ratio
+        index := int(position)
+        if index >= len(data)-2*channels {
+            break
+        }
+        for c := 0; c < channels; c++ {
+            low := int16(data[index+c*2]) | int16(data[index+c*2+1])<<8
+            high := int16(data[index+c*2+2*channels]) | int16(data[index+c*2+1+2*channels])<<8
+            value := low + int16(float64(high-low)*(position-float64(index)))
+            output[i+c*2] = byte(value)
+            output[i+c*2+1] = byte(value >> 8)
+        }
+    }
+
+    return output
 }
 
 func scheduleSound(key string, deviceVolume float64) {
-    // useful to help debug sounds
-    // fmt.Printf("Playing sound: %s\n", key)
     wg.Add(1)
     go func() {
         defer wg.Done()
@@ -170,51 +339,146 @@ func scheduleSound(key string, deviceVolume float64) {
     }()
 }
 
+func registerKeyboardHandlers() {
+    hook.Register(hook.KeyHold, []string{}, func(e hook.Event) {
+        handleKeyEvent(e, true)
+    })
+
+    hook.Register(hook.KeyDown, []string{"A-Z a-z 0-9"}, func(e hook.Event) {
+        handleKeyEvent(e, true)
+    })
+
+    hook.Register(hook.KeyUp, []string{"A-Z a-z 0-9"}, func(e hook.Event) {
+        handleKeyEvent(e, false)
+    })
+}
+
+func handleKeyEvent(e hook.Event, isDown bool) {
+    if muteKeyboard {
+        return
+    }
+
+    currentTime := time.Now().UnixNano() / int64(time.Millisecond)
+
+    if isDown {
+        // If the key is already pressed, don't play the sound again
+        if keyState[e.Rawcode] {
+            return
+        }
+        keyState[e.Rawcode] = true
+
+        if currentTime-lastKeyDownTime < MULTI_KEY_DELAY {
+            return
+        }
+        lastKeyDownTime = currentTime
+        lastKeyPressTime[e.Rawcode] = currentTime
+
+        var soundKey string
+        switch e.Rawcode {
+        case ENTER:
+            soundKey = "down_enter"
+        case SPACE:
+            soundKey = "down_space"
+        default:
+            soundKey = getRandomDownKey()
+        }
+        scheduleSound(soundKey, keyboardVolume)
+    } else {
+        // If the key wasn't pressed (according to our state), don't play the up sound
+        if !keyState[e.Rawcode] {
+            return
+        }
+        keyState[e.Rawcode] = false
+
+        if currentTime-lastKeyUpTime < MULTI_KEY_DELAY {
+            return
+        }
+        lastKeyUpTime = currentTime
+
+        lastPress, exists := lastKeyPressTime[e.Rawcode]
+        if !exists || currentTime-lastPress < THRESHOLD_MS {
+            return
+        }
+
+        var soundKey string
+        switch e.Rawcode {
+        case ENTER:
+            soundKey = "up_enter"
+        case SPACE:
+            soundKey = "up_space"
+        default:
+            soundKey = getRandomUpKey()
+        }
+        scheduleSound(soundKey, keyboardVolume)
+    }
+}
+
 func registerMouseHandlers() {
     hook.Register(hook.MouseHold, []string{}, func(e hook.Event) {
-        mouseMutex.Lock()
-        if isMouseMuted {
-            mouseMutex.Unlock()
-            return
-        }
-        mouseMutex.Unlock()
-
-        if keyMap[e.Button] {
-            return
-        }
-        keyMap[e.Button] = true
-        scheduleSound("down_mouse", mouseVolume)
+        handleMouseHold(e)
     })
 
     hook.Register(hook.MouseDown, []string{}, func(e hook.Event) {
-        mouseMutex.Lock()
-        if isMouseMuted {
-            mouseMutex.Unlock()
-            return
-        }
-        mouseMutex.Unlock()
-
-        if keyMap[e.Button] {
-            scheduleSound("up_mouse", mouseVolume)
-            keyMap[e.Button] = false
-            return
-        }
+        handleMouseDown(e)
     })
 
     hook.Register(hook.MouseUp, []string{}, func(e hook.Event) {
-        mouseMutex.Lock()
-        if isMouseMuted {
-            mouseMutex.Unlock()
-            return
-        }
-        mouseMutex.Unlock()
-
-        if !keyMap[e.Button] {
-            return
-        }
-        keyMap[e.Button] = false
-        scheduleSound("up_mouse", mouseVolume)
+        handleMouseUp(e)
     })
+}
+
+func handleMouseHold(e hook.Event) {
+    mouseMutex.Lock()
+    defer mouseMutex.Unlock()
+
+    if isMouseMuted {
+        return
+    }
+
+    currentTime := time.Now().UnixNano() / int64(time.Millisecond)
+    lastDown, exists := lastMouseDownTime[e.Button]
+
+    if !exists || currentTime-lastDown >= THRESHOLD_MS {
+        lastMouseDownTime[e.Button] = currentTime
+        scheduleSound("down_mouse", mouseVolume)
+    }
+}
+
+func handleMouseDown(e hook.Event) {
+    mouseMutex.Lock()
+    defer mouseMutex.Unlock()
+
+    if isMouseMuted {
+        return
+    }
+
+    currentTime := time.Now().UnixNano() / int64(time.Millisecond)
+    lastDown, exists := lastMouseDownTime[e.Button]
+
+    if !exists || currentTime-lastDown >= THRESHOLD_MS {
+        lastMouseDownTime[e.Button] = currentTime
+        scheduleSound("up_mouse", mouseVolume)
+    }
+}
+
+func handleMouseUp(e hook.Event) {
+    mouseMutex.Lock()
+    defer mouseMutex.Unlock()
+
+    if isMouseMuted {
+        return
+    }
+
+    currentTime := time.Now().UnixNano() / int64(time.Millisecond)
+    lastUp, exists := lastMouseUpTime[e.Button]
+
+    if !exists || currentTime-lastUp >= THRESHOLD_MS {
+        lastDown, downExists := lastMouseDownTime[e.Button]
+        if downExists && currentTime-lastDown >= THRESHOLD_MS {
+            lastMouseUpTime[e.Button] = currentTime
+            scheduleSound("up_mouse", mouseVolume)
+        }
+    }
 }
 
 func registerMutedMouseHandlers() {
@@ -233,19 +497,17 @@ func registerUnmutedMouseHandlers() {
     })
 
     hook.Register(hook.MouseDown, []string{}, func(e hook.Event) {
-        if keyMap[e.Button] {
+        if !keyMap[e.Button] {
             scheduleSound("down_mouse", mouseVolume)
-            keyMap[e.Button] = false
-            return
+            keyMap[e.Button] = true
         }
     })
 
     hook.Register(hook.MouseUp, []string{}, func(e hook.Event) {
-        if !keyMap[e.Button] {
-            return
+        if keyMap[e.Button] {
+            keyMap[e.Button] = false
+            scheduleSound("up_mouse", mouseVolume)
         }
-        keyMap[e.Button] = false
-        scheduleSound("up_mouse", mouseVolume)
     })
 }
 
@@ -323,59 +585,15 @@ func main() {
     loadSoundsForMouse(mouse)
 
     var err error
-    context, err = oto.NewContext(48000, 2, 2, 8192)
+    // context, err = oto.NewContext(48000, 2, 2, 8192)
     if err != nil {
         log.Fatalf("failed to create Oto context: %v", err)
     }
-    defer context.Close()
+    // defer context.Close()
 
-    hook.Register(hook.KeyHold, []string{}, func(e hook.Event) {
-        if keyMap[e.Rawcode] || muteKeyboard {
-            return
-        }
-        keyMap[e.Rawcode] = true
-
-        if e.Rawcode == ENTER {
-            scheduleSound("down_enter", keyboardVolume)
-        } else if e.Rawcode == SPACE {
-            scheduleSound("down_space", keyboardVolume)
-        } else {
-            scheduleSound(getRandomDownKey(), keyboardVolume)
-        }
-    })
-
-    hook.Register(hook.KeyDown, []string{"A-Z a-z 0-9"}, func(e hook.Event) {
-        if keyMap[e.Rawcode] || muteKeyboard {
-            return
-        }
-        keyMap[e.Rawcode] = true
-
-        if e.Rawcode == ENTER {
-            scheduleSound("down_enter", keyboardVolume)
-        } else if e.Rawcode == SPACE {
-            scheduleSound("down_space", keyboardVolume)
-        } else {
-            scheduleSound(getRandomDownKey(), keyboardVolume)
-        }
-    })
-
-    hook.Register(hook.KeyUp, []string{"A-Z a-z 0-9"}, func(e hook.Event) {
-        if !keyMap[e.Rawcode] || muteKeyboard {
-            return
-        }
-        keyMap[e.Rawcode] = false
-
-        if e.Rawcode == ENTER {
-            scheduleSound("up_enter", keyboardVolume)
-        } else if e.Rawcode == SPACE {
-            scheduleSound("up_space", keyboardVolume)
-        } else {
-            scheduleSound(getRandomUpKey(), keyboardVolume)
-        }
-    })
-
-	isMouseMuted = muteMouse
+    registerKeyboardHandlers()
     registerMouseHandlers()
+    isMouseMuted = muteMouse
 
     go func() {
         listener, err := net.Listen("tcp", "localhost:8080")
@@ -479,15 +697,15 @@ func handleConnection(conn net.Conn) {
         muteKeyboard = false
         conn.Write([]byte("Keyboard sounds unmuted\n"))
     case "toggle_mouse":
-		mouseMutex.Lock()
-		muteMouse = !muteMouse
-		isMouseMuted = muteMouse
-		mouseMutex.Unlock()
-		if muteMouse {
-			conn.Write([]byte("Mouse sounds muted\n"))
-		} else {
-			conn.Write([]byte("Mouse sounds unmuted\n"))
-		}
+        mouseMutex.Lock()
+        muteMouse = !muteMouse
+        isMouseMuted = muteMouse
+        mouseMutex.Unlock()
+        if muteMouse {
+            conn.Write([]byte("Mouse sounds muted\n"))
+        } else {
+            conn.Write([]byte("Mouse sounds unmuted\n"))
+        }
     case "mute_mouse":
         mouseMutex.Lock()
         muteMouse = true
