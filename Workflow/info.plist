@@ -60,7 +60,7 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
-				<string>4E15C976-7920-4881-AFA4-C68BFB049166</string>
+				<string>5A94BC48-3AED-4DC9-99E1-201F61289238</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -233,8 +233,6 @@
 				<false/>
 			</dict>
 		</array>
-		<key>4E15C976-7920-4881-AFA4-C68BFB049166</key>
-		<array/>
 		<key>5003DD5F-F54D-429A-80D1-AF3B63F51877</key>
 		<array>
 			<dict>
@@ -591,6 +589,29 @@
 	<string>Taptix</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>src/nexus.sh</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>96D72A0A-B93C-448D-916B-E3DEF0119652</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -1151,31 +1172,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>#!/bin/bash
-
-eval "nohup ./taptix ${theArguments} &amp;"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>4E15C976-7920-4881-AFA4-C68BFB049166</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>alfredfiltersresults</key>
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
@@ -1219,6 +1215,31 @@ eval "nohup ./taptix ${theArguments} &amp;"</string>
 			<string>3D75AB52-E8F9-40E0-958F-0173CDC6083E</string>
 			<key>version</key>
 			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>#!/bin/bash
+
+eval "nohup ./taptix ${theArguments} &amp;"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>5A94BC48-3AED-4DC9-99E1-201F61289238</string>
+			<key>version</key>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -1969,17 +1990,6 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<key>ypos</key>
 			<real>355</real>
 		</dict>
-		<key>4E15C976-7920-4881-AFA4-C68BFB049166</key>
-		<dict>
-			<key>colorindex</key>
-			<integer>1</integer>
-			<key>note</key>
-			<string>Running Process</string>
-			<key>xpos</key>
-			<real>2335</real>
-			<key>ypos</key>
-			<real>440</real>
-		</dict>
 		<key>5003DD5F-F54D-429A-80D1-AF3B63F51877</key>
 		<dict>
 			<key>xpos</key>
@@ -1997,6 +2007,17 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<real>95</real>
 			<key>ypos</key>
 			<real>695</real>
+		</dict>
+		<key>5A94BC48-3AED-4DC9-99E1-201F61289238</key>
+		<dict>
+			<key>colorindex</key>
+			<integer>1</integer>
+			<key>note</key>
+			<string>Running Process</string>
+			<key>xpos</key>
+			<real>2335</real>
+			<key>ypos</key>
+			<real>440</real>
 		</dict>
 		<key>6536905C-8CF0-4F1C-A3EA-73E6EE9F52FE</key>
 		<dict>
@@ -2033,6 +2054,13 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<real>90</real>
 			<key>ypos</key>
 			<real>1085</real>
+		</dict>
+		<key>96D72A0A-B93C-448D-916B-E3DEF0119652</key>
+		<dict>
+			<key>xpos</key>
+			<real>185</real>
+			<key>ypos</key>
+			<real>15</real>
 		</dict>
 		<key>98DA280B-FA99-4686-8F2D-D46222F9EC53</key>
 		<dict>
