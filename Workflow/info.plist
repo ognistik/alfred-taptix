@@ -595,29 +595,6 @@
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string></string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string>src/nexus.sh</string>
-				<key>type</key>
-				<integer>8</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>96D72A0A-B93C-448D-916B-E3DEF0119652</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
 				<string>echo "get_keyboard" | nc localhost 8080</string>
@@ -1224,8 +1201,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>#!/bin/bash
-
+				<string>xattr -d com.apple.quarantine taptix &gt;/dev/null 2&gt;&amp;1
 eval "nohup ./taptix ${theArguments} &amp;"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
@@ -1993,7 +1969,7 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 		<key>5003DD5F-F54D-429A-80D1-AF3B63F51877</key>
 		<dict>
 			<key>xpos</key>
-			<real>815</real>
+			<real>810</real>
 			<key>ypos</key>
 			<real>365</real>
 		</dict>
@@ -2054,13 +2030,6 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 			<real>90</real>
 			<key>ypos</key>
 			<real>1085</real>
-		</dict>
-		<key>96D72A0A-B93C-448D-916B-E3DEF0119652</key>
-		<dict>
-			<key>xpos</key>
-			<real>185</real>
-			<key>ypos</key>
-			<real>15</real>
 		</dict>
 		<key>98DA280B-FA99-4686-8F2D-D46222F9EC53</key>
 		<dict>
