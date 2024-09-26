@@ -1201,7 +1201,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>xattr -d com.apple.quarantine taptix &gt;/dev/null 2&gt;&amp;1
+				<string>xattr -d com.apple.quarantine ./taptix &gt;/dev/null 2&gt;&amp;1
 eval "nohup ./taptix ${theArguments} &amp;"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
