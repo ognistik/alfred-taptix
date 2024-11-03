@@ -952,8 +952,10 @@
 				<key>runningsubtext</key>
 				<string>Please Wait</string>
 				<key>script</key>
-				<string>export query="$1"
-./scripts/fuzzy.py /usr/bin/osascript scripts/main.js</string>
+				<string>xattr -d com.apple.quarantine ./scripts/fuzzy &gt;/dev/null 2&gt;&amp;1
+
+export query="$1"
+./scripts/fuzzy /usr/bin/osascript scripts/main.js</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -1393,8 +1395,10 @@ sleep 0.3 &amp;&amp; echo "$theAction $theArg" | nc localhost 8080</string>
 				<key>runningsubtext</key>
 				<string></string>
 				<key>script</key>
-				<string>export query="$1"
-./scripts/fuzzy2.py /usr/bin/osascript scripts/live-settings.js</string>
+				<string>xattr -d com.apple.quarantine ./scripts/fuzzy &gt;/dev/null 2&gt;&amp;1
+
+export query="$1"
+./scripts/fuzzy /usr/bin/osascript scripts/live-settings.js</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
