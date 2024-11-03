@@ -25,8 +25,7 @@ Taptix is a lightweight Go app that adds mechanical keyboard and mouse sounds to
 
 ---
 ## INSTALLATION
-1. Check the [latest release](https://github.com/ognistik/alfred-taptix/releases/latest) and install the `.alfredworkflow` file.
-2. [Authorize Taptix](#authorization) for it to work.
+Check the [latest release](https://github.com/ognistik/alfred-taptix/releases/latest) and install the `.alfredworkflow` file.
 
 ---
 ## HOW TO USE
@@ -115,33 +114,6 @@ The `cmd` trigger can also receive any of the following advanced arguments once 
 *Note. The `set_keyboard` and `set_mouse` can optionally receive a second argument with the custom path for their sounds with the flag -sp (no double quotes are needed, even if path includes spaces). If no second argument is sent, Taptix will look for the sounds in the same directory of the current keyboard or mouse sounds.*
 
 Furthermore, the `cmd` trigger can receive multiple “Advanced Arguments” comma separated. If you create another workflow specifically for Taptix triggers, or if you want to integrate it with other automation apps, you can use this as a way to trigger custom presets. For example, you can send the following in a single argument: `set_keyboard Nocfree Lite Soft,set_mouse Logitech Master 3S,set_keyboard_volume 9,set_mouse_volume 4`
-
----
-## AUTHORIZATION
-**Taptix is a small app. Unfortunately, I'm not a developer nor have a way to notarize it.** When you first run the workflow, you'll see a warning. You can either trust the app or compile it from the source code.
-
-<p align="center">
-  <img width="300" src="Workflow/assets/images/image02.jpg">
-</p>
-
-**To trust the app:**
-1. Go to Alfred's Workflows tab.
-2. Find Taptix in the sidebar.
-3. Right-click and reveal the workflow in Finder.
-4. Right-click the "taptix" file and select open.
-5. Click "Open" in the warning dialog.
-
-<p align="center">
-  <img width="300" src="Workflow/assets/images/image03.jpg">
-</p>
-
-*NOTE: If you are on Sequoia, you may need [some extra steps](https://mjtsai.com/blog/2024/07/05/sequoia-removes-gatekeeper-contextual-menu-override/)...*
-
-**When you click "Open" a Terminal window will unsuccessfully attempt to initialize Taptix. Don't worry, this only means you've successfully authorized the app.** You can close Terminal and use the Workflow without issues.
-
-If you opt to compile the app yourself you'll need to clone this repo and have Go in your system. Further instructions in [THIS README](https://github.com/ognistik/alfred-taptix/blob/main/Source/README.md). Once done, simply replace the "taptix" file inside the Workflow's folder with the one you've compiled yourself.
-
-**Sorry for this inconvenience!**
 
 ---
 ## FAQ

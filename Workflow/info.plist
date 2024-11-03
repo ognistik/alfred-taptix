@@ -1783,7 +1783,7 @@ done</string>
 **Mechanical Keyboard and Mouse Sounds for Alfred**
 ![](assets/images/taptix-s.png)
 
-[~ Visit on Github~ ](https://github.com/ognistik/alfred-taptix) | [~ Video Overview &amp; Setup ~](https://youtu.be/_Xd86bBDAco)
+[~ Visit on Github~ ](https://github.com/ognistik/alfred-taptix) | [~ Video Overview &amp; Setup ~](https://youtu.be/_Xd86bBDAco) | [~ Buy me a Coffee 🙏 ~](https://buymeacoffee.com/afadingthought)
 
 
 ## FEATURES
@@ -1800,8 +1800,7 @@ done</string>
 
 ---
 ## INSTALLATION
-1. Check the [latest release](https://github.com/ognistik/alfred-taptix/releases/latest) and install the `.alfredworkflow` file.
-2. [Authorize Taptix](https://github.com/ognistik/alfred-taptix#authorization) for it to work.
+Check the [latest release](https://github.com/ognistik/alfred-taptix/releases/latest) and install the `.alfredworkflow` file.
 
 ---
 ## HOW TO USE
@@ -2435,7 +2434,7 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.1.2</string>
+	<string>1.1.3</string>
 	<key>webaddress</key>
 	<string>https://github.com/ognistik/alfred-taptix</string>
 </dict>
