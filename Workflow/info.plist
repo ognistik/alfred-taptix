@@ -960,6 +960,8 @@ export query="$1"
 				<integer>1</integer>
 				<key>scriptfile</key>
 				<string></string>
+				<key>skipuniversalaction</key>
+				<true/>
 				<key>subtext</key>
 				<string>Activate, Deactivate, Set Sounds and Volume</string>
 				<key>title</key>
