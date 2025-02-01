@@ -2436,7 +2436,7 @@ Do you have some sound packs you'd like to share? Read about how to contribute, 
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.1.3</string>
+	<string>1.1.4</string>
 	<key>webaddress</key>
 	<string>https://github.com/ognistik/alfred-taptix</string>
 </dict>
